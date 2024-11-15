@@ -49,3 +49,4 @@ class NotepadUser(HttpUser):
     def on_stop(self):
         # Logout at the end of each simulated user session
         self.client.get("/logout")
+        print("hello")
