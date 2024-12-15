@@ -40,32 +40,44 @@ jobs:
 
                 console.log("Changed Files:", changedFiles.data);
 
-                const labelsToAdd = [];
+                let labelsToAdd = [];
 
-                // Etiquetar según palabras clave en el título de la PR
-                if (prTitle.includes("bug")) {
-                  labelsToAdd.push("bug");
-                }
-                if (prTitle.includes("feature")) {
-                  labelsToAdd.push("enhancement");
-                }
-
-                // Etiquetar según el nombre de la rama
+                // Etiquetar por tipo de actividad
                 if (branchName.includes("task")) {
                   labelsToAdd.push("task");
-                }
-                if (branchName.includes("incidence")) {
+                } else if (branchName.includes("incidence")) {
                   labelsToAdd.push("incidence");
                 }
 
-                // Etiquetar según los archivos modificados
+                // Etiquetar por tipo de cambio
+                if (prTitle.includes("feat")) {
+                  labelsToAdd.push("feat");
+                } else if (prTitle.includes("fix")) {
+                  labelsToAdd.push("fix");
+                } else if (prTitle.includes("refactor")) {
+                  labelsToAdd.push("refactor");
+                } else if (prTitle.includes("style")) {
+                  labelsToAdd.push("style");
+                } else if (prTitle.includes("test")) {
+                  labelsToAdd.push("test");
+                } else if (prTitle.includes("database")) {
+                  labelsToAdd.push("database");
+                } else if (prTitle.includes("build")) {
+                  labelsToAdd.push("build");
+                } else if (prTitle.includes("hotfix")) {
+                  labelsToAdd.push("hotfix");
+                }
+
+                // Etiquetar por área del sistema
                 const fileExtensions = changedFiles.data.map(file => file.filename.split('.').pop());
                 if (fileExtensions.some(ext => ["html", "js", "css"].includes(ext))) {
                   labelsToAdd.push("frontend");
-                }
-                if (fileExtensions.some(ext => ["py", "java", "rb"].includes(ext))) {
+                } else if (fileExtensions.some(ext => ["py", "java", "rb"].includes(ext))) {
                   labelsToAdd.push("backend");
                 }
+
+                // Eliminar etiquetas duplicadas
+                labelsToAdd = [...new Set(labelsToAdd)];
 
                 console.log("Labels to Add:", labelsToAdd);
 
@@ -81,4 +93,4 @@ jobs:
               } catch (error) {
                 console.error("Error fetching changed files:", error);
               }
-            })();ssss
+            })();
