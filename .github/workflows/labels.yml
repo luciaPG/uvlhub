@@ -2,7 +2,7 @@ name: "Auto Label Pull Requests"
 
 on:
   pull_request:
-    types: [opened, edited, synchronize]  # Corre cuando se abre o actualiza una PR.
+    types: [opened, edited, synchronize]
 
 jobs:
   label-pr:
@@ -19,16 +19,15 @@ jobs:
             const pr = context.payload.pull_request;
 
             // Validar que los valores no sean null o undefined
-            const prTitle = pr && pr.title ? pr.title.toLowerCase() : "";
-            const prBody = pr && pr.body ? pr.body.toLowerCase() : "";
-            const branchName = pr && pr.head && pr.head.ref ? pr.head.ref.toLowerCase() : "";
+            const prTitle = pr?.title ? pr.title.toLowerCase() : "";
+            const prBody = pr?.body ? pr.body.toLowerCase() : "";
+            const branchName = pr?.head?.ref ? pr.head.ref.toLowerCase() : "";
 
             // Mostrar los valores para depuración
             console.log("PR Title:", prTitle || "No title");
             console.log("PR Body:", prBody || "No body");
             console.log("Branch Name:", branchName || "No branch name");
 
-            // Obtener archivos modificados
             const changedFiles = await github.pulls.listFiles({
               owner: context.repo.owner,
               repo: context.repo.repo,
