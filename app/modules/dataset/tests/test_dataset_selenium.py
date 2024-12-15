@@ -47,3 +47,9 @@ class TestTestDataSet():
         self.driver.find_element(By.CSS_SELECTOR, ".btn-close").click()
         self.driver.find_element(By.ID, "btnGroupDropExport11").click()
         self.driver.find_element(By.LINK_TEXT, "UVL").click()
+
+        print("Test completed successfully")s
+
+
+
+
