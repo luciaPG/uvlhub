@@ -43,6 +43,7 @@ class TestTestDataSet():
     self.driver.find_element(By.CSS_SELECTOR, ".list-group-item:nth-child(2) .col-12 > .btn").click()
     element = self.driver.find_element(By.CSS_SELECTOR, ".list-group-item:nth-child(2) .col-12 > .btn")
     actions = ActionChains(self.driver)
+    actions = ActionChains(self.driver)
     actions.move_to_element(element).perform()
     element = self.driver.find_element(By.CSS_SELECTOR, "body")
     actions = ActionChains(self.driver)
