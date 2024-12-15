@@ -2,7 +2,7 @@ name: "Auto Label Pull Requests"
 
 on:
   pull_request:
-    types: [opened, edited, synchronize]  # Corre cuando se abre o actualiza una PR.
+    types: [opened, edited, synchronize]
 
 jobs:
   label-pr:
@@ -16,14 +16,15 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const prTitle = context.payload.pull_request.title.toLowerCase();
-            const prBody = context.payload.pull_request.body.toLowerCase();
-            const branchName = context.payload.pull_request.head.ref.toLowerCase();
+            const pr = context.payload.pull_request;
+            const prTitle = pr.title ? pr.title.toLowerCase() : "";
+            const prBody = pr.body ? pr.body.toLowerCase() : "";
+            const branchName = pr.head && pr.head.ref ? pr.head.ref.toLowerCase() : "";
 
             const changedFiles = await github.pulls.listFiles({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
+              pull_number: pr.number,
             });
 
             const labelsToAdd = [];
@@ -58,7 +59,7 @@ jobs:
               await github.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
+                issue_number: pr.number,
                 labels: labelsToAdd,
               });
             }
