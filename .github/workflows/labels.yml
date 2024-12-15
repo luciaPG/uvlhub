@@ -18,23 +18,26 @@ jobs:
           script: |
             const pr = context.payload.pull_request;
 
-            // Validar que los valores no sean null o undefined
-            const prTitle = pr?.title ? pr.title.toLowerCase() : "";
-            const prBody = pr?.body ? pr.body.toLowerCase() : "";
-            const branchName = pr?.head?.ref ? pr.head.ref.toLowerCase() : "";
+            // Validar existencia de los datos de la PR
+            if (!pr) {
+              console.log("No pull request data found.");
+              return;
+            }
 
-            // Mostrar los valores para depuración
+            const prTitle = pr.title ? pr.title.toLowerCase() : "";
+            const prBody = pr.body ? pr.body.toLowerCase() : "";
+            const branchName = pr.head && pr.head.ref ? pr.head.ref.toLowerCase() : "";
+
             console.log("PR Title:", prTitle || "No title");
             console.log("PR Body:", prBody || "No body");
             console.log("Branch Name:", branchName || "No branch name");
 
+            // Obtener archivos modificados
             const changedFiles = await github.pulls.listFiles({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: pr.number,
             });
-
-            console.log("Changed Files:", changedFiles.data);
 
             const labelsToAdd = [];
 
